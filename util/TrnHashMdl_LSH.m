@@ -1,6 +1,6 @@
 function model = TrnHashMdl_LSH(dataMat, paraStr)
 % INTRO
-%   train a LSH hashing model
+%   train a hashing model of LSH
 % INPUT
 %   dataMat: D x N (data matrix)
 %   paraStr: struct (hyper-parameters)

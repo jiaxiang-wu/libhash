@@ -17,6 +17,6 @@ paraStr.logFilePath = sprintf('%s/%s.%s.log', ...
 paraStr.rltFilePath = sprintf('%s/%s.%s.mat', ...
     paraStr.rltDirPath, paraStr.mthdName, paraStr.dataSetName);
 
-% configure training hyper-parameters
+% configure hyper-parameters for the training process
 
 end

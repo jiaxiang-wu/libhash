@@ -1,6 +1,6 @@
 function model = TrnHashMdl_ITQ(dataMat, paraStr)
 % INTRO
-%   train an ITQ hashing model
+%   train a hashing model of ITQ
 % INPUT
 %   dataMat: D x N (data matrix)
 %   paraStr: struct (hyper-parameters)
