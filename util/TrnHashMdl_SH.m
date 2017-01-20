@@ -11,7 +11,7 @@ function model = TrnHashMdl_SH(dataMat, paraStr)
 fprintf('[INFO] entering TrnHashMdl_SH()\n');
 
 % add path for all files under ./extern/spectral_hashing/util
-addpath(genpath('./extern/spectral_hashing'));
+addpath(genpath('./extern/SH'));
 
 % call <trainSH> to obtain SH parameters
 param.nbits = paraStr.hashBitCnt;

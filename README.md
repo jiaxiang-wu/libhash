@@ -1,7 +1,6 @@
 # Introduction
 
-This project aims at intergrating popular hashing-based ANN search methods
-into one unified framework for more convenient performance comparison.
+This project aims at intergrating popular hashing-based ANN search methods into one unified framework for more convenient performance comparison.
 
 # Methods
 
@@ -15,7 +14,7 @@ We have now included the following methods:
 
 We report the MeanAP (Mean Average Precision) scores for above methods on SIFT-1M and GIST-1M data sets. For each query, the ground-truth matches are defined as the top-100/1K/10K nearest neighbors in the Euclidean space.
 
-## SIFT1M
+## SIFT-1M
 
 ANN Search of the top-100 nearest neighbors:
 
@@ -41,6 +40,6 @@ ANN Search of the top-10K nearest neighbors:
 | ITQ    | 0.1626 | 0.2878 | 0.3701 | 0.4271 |
 | SH     | 0.1536 | 0.2089 | 0.2528 | 0.2614 |
 
-## GIST1M
+## GIST-1M
 
 To be added.
