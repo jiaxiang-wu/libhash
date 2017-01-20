@@ -10,7 +10,7 @@ function model = TrnHashMdl_SH(dataMat, paraStr)
 % display the greeting message
 fprintf('[INFO] entering TrnHashMdl_SH()\n');
 
-% add path for all files under ./extern/spectral_hashing/util
+% add path for all files under ./extern/SH
 addpath(genpath('./extern/SH'));
 
 % call <trainSH> to obtain SH parameters

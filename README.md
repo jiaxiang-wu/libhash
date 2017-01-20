@@ -6,9 +6,10 @@ This project aims at intergrating popular hashing-based ANN search methods into 
 
 We have now included the following methods:
 
-* LSH: Locality Sensitive Hashing
-* ITQ: Iterative Quantization
-* SH: Spectral Hashing
+* LSH: Locality Sensitive Hashing (SCG '04)
+* ITQ: Iterative Quantization (CVPR '11)
+* SH: Spectral Hashing (NIPS '08)
+* AGH: Anchor Graph Hashing (ICML '11)
 
 # Evaluation
 
@@ -16,29 +17,15 @@ We report the MeanAP (Mean Average Precision) scores for above methods on SIFT-1
 
 ## SIFT-1M
 
-ANN Search of the top-100 nearest neighbors:
+ANN Search of the top-100/1K/10K nearest neighbors:
 
-| Method | 16-bit | 32-bit | 48-bit | 64-bit |
-|--------|--------|--------|--------|--------|
-| LSH    | 0.0063 | 0.0214 | 0.0371 | 0.0627 |
-| ITQ    | 0.0089 | 0.0311 | 0.0579 | 0.0880 |
-| SH     | 0.0147 | 0.0481 | 0.0807 | 0.1012 |
-
-ANN Search of the top-1K nearest neighbors:
-
-| Method | 16-bit | 32-bit | 48-bit | 64-bit |
-|--------|--------|--------|--------|--------|
-| LSH    | 0.0202 | 0.0493 | 0.0879 | 0.1136 |
-| ITQ    | 0.0360 | 0.0899 | 0.1425 | 0.1931 |
-| SH     | 0.0483 | 0.1012 | 0.1452 | 0.1634 |
-
-ANN Search of the top-10K nearest neighbors:
-
-| Method | 16-bit | 32-bit | 48-bit | 64-bit |
-|--------|--------|--------|--------|--------|
-| LSH    | 0.0957 | 0.1654 | 0.2277 | 0.2851 |
-| ITQ    | 0.1626 | 0.2878 | 0.3701 | 0.4271 |
-| SH     | 0.1536 | 0.2089 | 0.2528 | 0.2614 |
+| Method | 16-bit                | 32-bit                | 48-bit                | 64-bit                |
+|--------|-----------------------|-----------------------|-----------------------|-----------------------|
+| LSH    | .0063 / .0202 / .0957 | .0214 / .0493 / .1654 | .0371 / .0879 / .2277 | .0627 / .1136 / .2851 |
+| ITQ    | .0089 / .0360 / .1626 | .0311 / .0899 / .2878 | .0579 / .1425 / .3701 | .0880 / .1931 / .4271 |
+| SH     | .0147 / .0483 / .1536 | .0481 / .1012 / .2089 | .0807 / .1452 / .2528 | .1012 / .1634 / .2614 |
+| AGH-1  | . / . / . | . / . / . | . / . / . | . / . / . |
+| AGH-2  | . / . / . | . / . / . | . / . / . | . / . / . |
 
 ## GIST-1M
 
