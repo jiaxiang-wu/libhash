@@ -1,4 +1,4 @@
-function rtrvMdl = TrnHashMdl_ITQ(dataMat, paraStr)
+function model = TrnHashMdl_ITQ(dataMat, paraStr)
 % INTRO
 %   train an ITQ hashing model
 % INPUT
@@ -41,7 +41,7 @@ end
 projMat = projMatSec * projMatPri;
 
 % create the hashing function handler
-rtrvMdl.projFunc = @(dataMat)(projMat * bsxfun(@minus, dataMat, meanVec));
-rtrvMdl.hashFunc = @(dataMat)((rtrvMdl.projFunc(dataMat) > 0) * 2 - 1);
+model.hashFunc = @(dataMat)(...
+    (projMat * bsxfun(@minus, dataMat, meanVec) > 0) * 2 - 1);
 
 end

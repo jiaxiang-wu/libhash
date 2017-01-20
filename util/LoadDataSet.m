@@ -44,7 +44,7 @@ dataMatLnk = LoadVecsFile(filePathLnk);
 % remove unused query samples and their ground-truth matches
 if paraStr.smplCntQry < size(dataMatQry, 2)
   dataMatQry = dataMatQry(:, 1 : paraStr.smplCntQry);
-  dataMatLnk = dataMatLnk(:, 1 : paraStr.smplCntQry);
+  dataMatLnk = dataMatLnk(1 : paraStr.linkCntPerQry, 1 : paraStr.smplCntQry);
 end
 
 end
