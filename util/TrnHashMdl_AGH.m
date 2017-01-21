@@ -19,9 +19,6 @@ clstOpts.iterCnt = 20;
 clstOpts.ctrdLst = [];
 clstOpts.initMthd = 'rnd';
 clstOpts.enblVrbs = true;
-% smplCnt = size(dataMat, 2);
-% smplIdxLst = randsample(smplCnt, min(smplCnt, clstOpts.ctrdCnt * 100));
-% dataMatSel = dataMat(:, smplIdxLst);
 [param.anchMat, ~] = KMeansClst(dataMat, clstOpts);
 
 % call <OneLayerAGH_Train>/<TwoLayerAGH_Train> to obtain AGH parameters

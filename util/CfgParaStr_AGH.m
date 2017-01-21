@@ -18,8 +18,8 @@ paraStr.rltFilePath = sprintf('%s/%s.%s.mat', ...
     paraStr.rltDirPath, paraStr.mthdName, paraStr.dataSetName);
 
 % configure hyper-parameters for the training process
-paraStr.anchCnt = 500; % # of anchor points
-paraStr.anchCntAfnt = 50; % # of nearest anchor points
+paraStr.anchCnt = 500; % # of anchor points (original: 300)
+paraStr.anchCntAfnt = 50; % # of nearest anchor points (original: 2 ~ 30)
 paraStr.rbfSigma = 0; % Gaussian RBF kernel's width parameter (0: auto)
 paraStr.useOneLevel = true; % use the one level version of AGH
 
