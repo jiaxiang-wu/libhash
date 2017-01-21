@@ -40,10 +40,10 @@ end
 
 function codeMat = HashFuncImpl(dataMat, param)
 % INTRO
-%   calculate binary codes with pre-trained SH parameters
+%   calculate binary codes with pre-trained AGH parameters
 % INPUT
 %   dataMat: D x N (data matrix)
-%   param: struct (pre-trained SH parameters)
+%   param: struct (pre-trained AGH parameters)
 % OUTPUT
 %   codeMat: R x N (binary code matrix)
 

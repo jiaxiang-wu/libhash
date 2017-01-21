@@ -6,7 +6,7 @@ function distMat = CalcDistMat(dataMatQry, dataMatDtb, dstPrtl)
 %   dataMatDtb: D x N_D (data matrix of all database instances)
 %   dstPrtl: string (distance computation protocal: 'ecld' or 'cosn')
 % OUTPUT
-%   distMat: N_Q x N_D (pair-wise Euclidean distance matrix)
+%   distMat: N_Q x N_D (pair-wise distance matrix)
 
 switch dstPrtl
   case 'ecld'
