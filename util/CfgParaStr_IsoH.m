@@ -18,7 +18,7 @@ paraStr.rltFilePath = sprintf('%s/%s.%s.mat', ...
     paraStr.rltDirPath, paraStr.mthdName, paraStr.dataSetName);
 
 % configure hyper-parameters for the training process
-paraStr.lrnMthd = 'LP'; % LP (Lift Projection) / GF (Gradient Flow)
+paraStr.lrnMthd = 'GF'; % LP (Lift Projection) / GF (Gradient Flow)
 paraStr.iterCnt = 25; % # of iterations (LP only)
 
 end
