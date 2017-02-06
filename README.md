@@ -9,6 +9,9 @@ We have now included the following methods:
 * **ITQ**: Iterative Quantization (CVPR '11)
 * **AGH**: Anchor Graph Hashing (ICML '11)
 * **SpH**: Spherical Hashing (CVPR '12)
+* **IsoH**: Isotropic Hashing (NIPS '12)
+
+Many thanks to the above methods' authors for their research and kindly provided source code.
 
 # Evaluation Results
 
@@ -26,6 +29,7 @@ ANN Search of the top-100/1K/10K nearest neighbors:
 | AGH-1  | .0070 / .0350 / .1611 | .0224 / .0784 / .2497 | .0348 / .1043 / .2800 | .0468 / .1288 / .2981 |
 | AGH-2  | .0035 / .0206 / .1151 | .0124 / .0482 / .1926 | .0208 / .0721 / .2257 | .0324 / .0915 / .2624 |
 | SpH    | .0090 / .0345 / .1283 | .0325 / .0814 / .2170 | .0585 / .1356 / .2885 | .0859 / .1760 / .3410 |
+| IsoH   | .0113 / .0376 / .1617 | .0429 / .1043 / .2754 | .0771 / .1520 / .2870 | .0982 / .1991 / .3584 |
 
 ## GIST-1M
 
