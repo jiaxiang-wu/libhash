@@ -1,7 +1,7 @@
 close all; clearvars; clc;
 
 % initialize constant variables
-kMthdName = 'SH';
+kMthdName = 'IsoH';
 kEvalFPath = './scEvaHashMthd.m';
 kParaFPath = './util/InitParaStr.m';
 

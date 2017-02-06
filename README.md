@@ -15,21 +15,21 @@ Many thanks to the above methods' authors for their research and kindly provided
 
 # Evaluation Results
 
-We report the MeanAP (Mean Average Precision) scores for above methods on SIFT-1M and GIST-1M data sets. For each query, the ground-truth matches are defined as its top-100/1K/10K nearest neighbors in the Euclidean space.
+We report the MeanAP (Mean Average Precision) scores for above methods on SIFT-1M and GIST-1M data sets. The training process is carried out on the learning subset of each data set. For each query, the ground-truth matches are defined as its top-100/1K/10K nearest neighbors in the Euclidean space.
 
 ## SIFT-1M
 
-ANN Search of the top-100/1K/10K nearest neighbors:
+The MeanAP scores for retrieving the top-100/1K/10K nearest neighbors:
 
 | Method | 16-bit                | 32-bit                | 48-bit                | 64-bit                |
 |--------|-----------------------|-----------------------|-----------------------|-----------------------|
-| LSH    | .0063 / .0202 / .0957 | .0214 / .0493 / .1654 | .0371 / .0879 / .2277 | .0627 / .1136 / .2851 |
-| SH     | .0147 / .0483 / .1536 | .0481 / .1012 / .2089 | .0807 / .1452 / .2528 | .1012 / .1634 / .2614 |
-| ITQ    | .0089 / .0360 / .1626 | .0311 / .0899 / .2878 | .0579 / .1425 / .3701 | .0880 / .1931 / .4271 |
-| AGH-1  | .0070 / .0350 / .1611 | .0224 / .0784 / .2497 | .0348 / .1043 / .2800 | .0468 / .1288 / .2981 |
-| AGH-2  | .0035 / .0206 / .1151 | .0124 / .0482 / .1926 | .0208 / .0721 / .2257 | .0324 / .0915 / .2624 |
-| SpH    | .0090 / .0345 / .1283 | .0325 / .0814 / .2170 | .0585 / .1356 / .2885 | .0859 / .1760 / .3410 |
-| IsoH   | .0113 / .0376 / .1617 | .0429 / .1043 / .2754 | .0771 / .1520 / .2870 | .0982 / .1991 / .3584 |
+| LSH    | .0050 / .0189 / .0934 | .0200 / .0513 / .1548 | .0364 / .0891 / .2276 | .0582 / .1261 / .2742 |
+| SH     | .0145 / .0482 / .1551 | .0481 / .1038 / .2148 | .0778 / .1431 / .2521 | .1017 / .1662 / .2652 |
+| ITQ    | .0084 / .0341 / .1647 | .0325 / .0933 / .2919 | .0588 / .1438 / .3729 | .0895 / .1923 / .4260 |
+| AGH-1  | .0077 / .0364 / .1656 | .0212 / .0761 / .2442 | .0374 / .1030 / .2808 | .0506 / .1298 / .3091 |
+| AGH-2  | .0031 / .0194 / .1168 | .0133 / .0480 / .1913 | .0221 / .0735 / .2314 | .0302 / .0940 / .2562 |
+| SpH    | .0088 / .0329 / .1277 | .0308 / .0787 / .2197 | .0598 / .1320 / .2930 | .0870 / .1729 / .3359 |
+| IsoH   | .0127 / .0426 / .1529 | .0420 / .1180 / .2501 | .0734 / .1510 / .3285 | .0911 / .1826 / .3554 |
 
 ## GIST-1M
 
