@@ -10,7 +10,7 @@ function model = TrnHashMdl_IsoH(dataMat, paraStr)
 % display the greeting message
 fprintf('[INFO] entering TrnHashMdl_IsoH()\n');
 
-% add path for all files under ./extern/AGH
+% add path for all files under ./extern/IsoH
 addpath(genpath('./extern/IsoH'));
 
 % calculate the mean feature vector and covariance matrix
