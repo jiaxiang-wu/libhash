@@ -10,6 +10,7 @@ We have now included the following methods:
 * **AGH**: Anchor Graph Hashing (ICML '11)
 * **SpH**: Spherical Hashing (CVPR '12)
 * **IsoH**: Isotropic Hashing (NIPS '12)
+* **KMH**: K-means Hashing (CVPR '13)
 
 Many thanks to the above methods' authors for their research and kindly provided source code.
 
@@ -30,6 +31,7 @@ The MeanAP scores for retrieving the top-100/1K/10K nearest neighbors:
 | AGH-2  | .0031 / .0194 / .1168 | .0133 / .0480 / .1913 | .0221 / .0735 / .2314 | .0302 / .0940 / .2562 |
 | SpH    | .0088 / .0329 / .1277 | .0308 / .0787 / .2197 | .0598 / .1320 / .2930 | .0870 / .1729 / .3359 |
 | IsoH   | .0127 / .0426 / .1529 | .0420 / .1180 / .2501 | .0734 / .1510 / .3285 | .0911 / .1826 / .3554 |
+| KMH    | .0100 / .0368 / .1505 | .0414 / .1018 / .2606 | n/a                   | .1166 / .2056 / .3540 |
 
 ## GIST-1M
 
