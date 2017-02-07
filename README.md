@@ -11,12 +11,15 @@ We have now included the following methods:
 * **SpH**: Spherical Hashing (CVPR '12)
 * **IsoH**: Isotropic Hashing (NIPS '12)
 * **KMH**: K-means Hashing (CVPR '13)
+* **SGH**: Scalable Graph Hashing (IJCAI '15)
 
 Many thanks to the above methods' authors for their research and kindly provided source code.
 
 # Evaluation Results
 
-We report the MeanAP (Mean Average Precision) scores for above methods on SIFT-1M and GIST-1M data sets. The training process is carried out on the learning subset of each data set. For each query, the ground-truth matches are defined as its top-100/1K/10K nearest neighbors in the Euclidean space.
+We report the MeanAP (Mean Average Precision) scores for above methods on SIFT-1M and GIST-1M data sets. For each query, the ground-truth matches are defined as its top-100/1K/10K nearest neighbors in the Euclidean space. The training process is carried out on the learning subset of each data set.
+
+Please note: The hyper-parameters of these hashing methods are not carefully tuned. Most hyper-parameters are the same as the author's choices in their original source code, although the corresponding data sets may differ. It is possible that the MeanAP scores of some methods can be further improved.
 
 ## SIFT-1M
 
@@ -33,6 +36,7 @@ The MeanAP scores for retrieving the top-100/1K/10K nearest neighbors:
 | IsoH-LP| .0127 / .0426 / .1529 | .0420 / .1180 / .2501 | .0734 / .1510 / .3285 | .0911 / .1826 / .3554 |
 | IsoH-GF| .0101 / .0399 / .1491 | .0363 / .0921 / .2625 | .0662 / .1385 / .3240 | .0876 / .1746 / .3848 |
 | KMH    | .0100 / .0368 / .1505 | .0414 / .1018 / .2606 | n/a                   | .1166 / .2056 / .3540 |
+| SGH    | .0086 / .0377 / .1623 | .0314 / .0939 / .2824 | .0562 / .1421 / .3523 | .0902 / .1914 / .4058 |
 
 ## GIST-1M
 
