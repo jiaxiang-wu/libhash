@@ -19,10 +19,10 @@ paraStr.trnWithLrnSet = true; % use the learning subset for training
 
 % hashing model evaluation
 paraStr.smplCntQry = 1000; % # of query samples to be evaluated
-paraStr.linkCntPerQry = 10000; % # of ground-truth links per query
+paraStr.linkCntPerQry = 10 .^ [2, 3, 4]; % # of ground-truth links per query
 paraStr.evaPosLst = 10 .^ (0 : 4); % evaluation positions
 %paraStr.evaPosLst = 2 .^ (0 : 15); % evaluation positions
 paraStr.smplCntRtrv = max(paraStr.evaPosLst); % # of retrieved samples
-paraStr.reclOnly = false; % compute recall@T scores only (faster)
+paraStr.evaPrtl = 'HammRank'; % evaluation protocol: 'HammRank' / 'HashLkup'
 
 end

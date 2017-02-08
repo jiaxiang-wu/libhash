@@ -7,10 +7,13 @@ function evaRslt = CalcEvaRslt(dataMatLnk, codeMatDtb, codeMatQry, paraStr)
 %   codeMatQry: R x N_Q (binary codes of query samples)
 %   paraStr: struct (hyper-parameters)
 % OUTPUT
-%   evaRslt: struct (evaluation result)
+%   evaRslt: struct (evaluation results)
 
 % add path for *.mexa64 files under ./mex
 addpath('./mex');
+
+% validate the evaluation protocol
+assert(ismember(paraStr.evaPrtl, [{'HammRank'}, {'HashLkup'}]));
 
 % obtain basic variables
 smplCntDtb = size(codeMatDtb, 2);
@@ -19,19 +22,13 @@ smplCntQry = size(codeMatQry, 2);
 % remove invalid evaluation positions
 paraStr.evaPosLst = paraStr.evaPosLst(paraStr.evaPosLst <= smplCntDtb);
 
-% convert the -1/+1 binary codes to 0/1 binary codes
-codeMatDtb = uint8((codeMatDtb + 1) / 2);
-codeMatQry = uint8((codeMatQry + 1) / 2);
+% convert -1/1 binary codes to {0, ..., 2 ^ n - 1} compact codes
+codeMatDtb = mex_CvtHashToCompCode(uint8((codeMatDtb + 1) / 2));
+codeMatQry = mex_CvtHashToCompCode(uint8((codeMatQry + 1) / 2));
 
-% convert the 0/1 binary code to 0 ~ (2 ^ n - 1) compact codes
-codeMatDtb = mex_CvtHashToCompCode(codeMatDtb);
-codeMatQry = mex_CvtHashToCompCode(codeMatQry);
-
-% evaluate performance for each query
+% evaluate ANN search performance for each query
 dataMatLnk = dataMatLnk + 1; % 0-based indexing to 1-based indexing
-evaRslt.precScrLst = zeros(numel(paraStr.evaPosLst), smplCntQry);
-evaRslt.reclScrLst = zeros(numel(paraStr.evaPosLst), smplCntQry);
-evaRslt.meanAPLst = zeros(1, smplCntQry);
+evaRslt = InitEvaRslt(paraStr);
 for smplIdxQry = 1 : smplCntQry
   % display the heart-beat message
   if mod(smplIdxQry, 10) == 0
@@ -40,22 +37,94 @@ for smplIdxQry = 1 : smplCntQry
   
   % compute the precision/recall@T and meanAP scores
   distLst = mex_CalcHammDist(codeMatQry(:, smplIdxQry), codeMatDtb);
-  [precScrLst, reclScrLst, meanAP] = ...
-      CalcPrecReclMap(distLst, dataMatLnk(:, smplIdxQry), paraStr.evaPosLst);
-  evaRslt.precScrLst(:, smplIdxQry) = precScrLst;
-  evaRslt.reclScrLst(:, smplIdxQry) = reclScrLst;
-  evaRslt.meanAPLst(smplIdxQry) = meanAP;
+  switch paraStr.evaPrtl
+    case 'HammRank'
+      evaRsltNew = EvaHammRank(distLst, ...
+          dataMatLnk(:, smplIdxQry), paraStr.linkCntPerQry, paraStr.evaPosLst);
+    case 'HashLkup'
+      evaRsltNew = EvaHashLkup(distLst, ...
+          dataMatLnk(:, smplIdxQry), paraStr.linkCntPerQry, paraStr.evaPosLst);
+  end
+  evaRslt = UpdtEvaRslt(evaRslt, paraStr, evaRsltNew);
 end
 
-% display the average precision/recall@T and meanAP scores
-evaRslt.precScrAve = mean(evaRslt.precScrLst, 2);
-evaRslt.reclScrAve = mean(evaRslt.reclScrLst, 2);
-evaRslt.meanAPAve = mean(evaRslt.meanAPLst);
-for evaPosIdx = 1 : numel(paraStr.evaPosLst)
-  fprintf('[INFO] precis@%d = %f, recall@%d = %f\n', ...
-      paraStr.evaPosLst(evaPosIdx), evaRslt.precScrAve(evaPosIdx), ...
-      paraStr.evaPosLst(evaPosIdx), evaRslt.reclScrAve(evaPosIdx));
+% display evaluation results
+DispEvaRslt(evaRslt, paraStr);
+
 end
-fprintf('[INFO] meanAP = %f\n', evaRslt.meanAPAve);
+
+function evaRslt = InitEvaRslt(paraStr)
+% INTRO
+%   initialize evaluation results
+% INPUT
+%   paraStr: struct (hyper-parameters)
+% OUTPUT
+%   evaRslt: struct (evaluation results)
+
+% initialize a structure to store evaluation results
+evaRslt.smplCntQry = 0; % # of evaluated queries
+switch paraStr.evaPrtl
+  case 'HammRank'
+    evaPosCnt = numel(paraStr.evaPosLst);
+    evaRslt.precMat = zeros(evaPosCnt, numel(paraStr.linkCntPerQry));
+    evaRslt.reclMat = zeros(evaPosCnt, numel(paraStr.linkCntPerQry));
+    evaRslt.mapVec = zeros(1, numel(paraStr.linkCntPerQry));
+  case 'HashLkup'
+    evaRslt.reclVec = zeros(1, numel(paraStr.linkCntPerQry));
+end
+
+end
+
+function evaRslt = UpdtEvaRslt(evaRslt, paraStr, evaRsltNew)
+% INTRO
+%   update evaluation results
+% INPUT
+%   evaRslt: struct (previous evaluation results)
+%   paraStr: struct (hyper-parameters)
+%   evaRsltNew: struct (single query's evaluation results)
+% OUTPUT
+%   evaRslt: struct (updated evaluation results)
+
+% update the structure of evaluation results
+presRat = evaRslt.smplCntQry / (evaRslt.smplCntQry + 1); % preserving ratio
+updtRat = 1 - presRat; % updating ratio
+switch paraStr.evaPrtl
+  case 'HammRank'
+    evaRslt.precMat = presRat * evaRslt.precMat + updtRat * evaRsltNew.precMat;
+    evaRslt.reclMat = presRat * evaRslt.reclMat + updtRat * evaRsltNew.reclMat;
+    evaRslt.mapVec = presRat * evaRslt.mapVec + updtRat * evaRsltNew.mapVec;
+  case 'HashLkup'
+    evaRslt.reclVec = presRat * evaRslt.reclVec + updtRat * evaRsltNew.reclVec;
+end
+evaRslt.smplCntQry = evaRslt.smplCntQry + 1;
+
+end
+
+function DispEvaRslt(evaRslt, paraStr)
+% INTRO
+%   display evaluation results
+% INPUT
+%   evaRslt: struct (evaluation results)
+%   paraStr: struct (hyper-parameters)
+% OUTPUT
+%   none
+
+% display evaluation results
+evaPosCnt = numel(paraStr.evaPosLst);
+switch paraStr.evaPrtl
+  case 'HammRank'
+    frmtStr = repmat(' %f', [1, evaPosCnt]);
+    for idx = 1 : numel(paraStr.linkCntPerQry)
+      fprintf('[INFO] # of GT-matches: %d\n', paraStr.linkCntPerQry(idx));
+      fprintf(['[INFO] precis@T =', frmtStr, '\n'], evaRslt.precMat(:, idx)');
+      fprintf(['[INFO] recall@T =', frmtStr, '\n'], evaRslt.reclMat(:, idx)');
+      fprintf('[INFO] meanAP = %f\n', evaRslt.mapVec(idx));
+    end
+  case 'HashLkup'
+    for idx = 1 : numel(paraStr.linkCntPerQry)
+      fprintf('[INFO] # of GT-matches: %d\n', paraStr.linkCntPerQry(idx));
+      fprintf('[INFO] recall = %f\n', evaRslt.reclVec(idx));
+    end
+end
 
 end

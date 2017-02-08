@@ -4,7 +4,7 @@ function distMat = CalcDistMat(dataMatQry, dataMatDtb, dstPrtl)
 % INPUT
 %   dataMatQry: D x N_Q (data matrix of all query instances)
 %   dataMatDtb: D x N_D (data matrix of all database instances)
-%   dstPrtl: string (distance computation protocal: 'ecld' or 'cosn')
+%   dstPrtl: string (distance computation protocol: 'ecld' or 'cosn')
 % OUTPUT
 %   distMat: N_Q x N_D (pair-wise distance matrix)
 
@@ -14,7 +14,7 @@ switch dstPrtl
   case 'cosn'
     distMat = CalcDistMat_Cosn(dataMatQry, dataMatDtb);
   otherwise
-    fprintf('[ERROR] unsupported distance computation protocal\n');
+    fprintf('[ERROR] unsupported distance computation protocol\n');
     return;
 end
 
