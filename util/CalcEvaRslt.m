@@ -37,15 +37,16 @@ for smplIdxQry = 1 : smplCntQry
   
   % compute the precision/recall@T and meanAP scores
   distLst = mex_CalcHammDist(codeMatQry(:, smplIdxQry), codeMatDtb);
+  linkLst = dataMatLnk(:, smplIdxQry);
   switch paraStr.evaPrtl
     case 'HammRank'
-      evaRsltNew = EvaHammRank(distLst, ...
-          dataMatLnk(:, smplIdxQry), paraStr.linkCntPerQry, paraStr.evaPosLst);
+      evaRsltNew = EvaHammRank(...
+          distLst, linkLst, paraStr.linkCntPerQry, paraStr.evaPosLst);
     case 'HashLkup'
-      evaRsltNew = EvaHashLkup(distLst, ...
-          dataMatLnk(:, smplIdxQry), paraStr.linkCntPerQry, paraStr.evaPosLst);
+      evaRsltNew = EvaHashLkup(...
+          distLst, linkLst, paraStr.linkCntPerQry, paraStr.hashLkupRad);
   end
-  evaRslt = UpdtEvaRslt(evaRslt, paraStr, evaRsltNew);
+  evaRslt = UpdtEvaRslt(evaRslt, evaRsltNew, paraStr);
 end
 
 % display evaluation results
@@ -75,15 +76,15 @@ end
 
 end
 
-function evaRslt = UpdtEvaRslt(evaRslt, paraStr, evaRsltNew)
+function evaRslt = UpdtEvaRslt(evaRslt, evaRsltNew, paraStr)
 % INTRO
 %   update evaluation results
 % INPUT
-%   evaRslt: struct (previous evaluation results)
-%   paraStr: struct (hyper-parameters)
+%   evaRslt: struct (overall evaluation results)
 %   evaRsltNew: struct (single query's evaluation results)
+%   paraStr: struct (hyper-parameters)
 % OUTPUT
-%   evaRslt: struct (updated evaluation results)
+%   evaRslt: struct (overall evaluation results)
 
 % update the structure of evaluation results
 presRat = evaRslt.smplCntQry / (evaRslt.smplCntQry + 1); % preserving ratio

@@ -1,6 +1,6 @@
 function evaRslt = EvaHammRank(distLst, linkLst, linkCntLst, evaPosLst)
 % INTRO
-%   compute the precision/recall@T and meanAP scores
+%   evaluate the Hamming ranking strategy for ANN search
 % INPUT
 %   distLst: N x 1 (list of Hamming distance)
 %   linkLst: K x 1 (list of ground-truth matches)
