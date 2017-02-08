@@ -4,7 +4,7 @@ close all; clearvars; clc;
 addpath('./util');
 
 % specify the hashing method to be evaluated
-kMthdName = 'ITQ';
+kMthdName = 'IMH';
 
 %%% PREPARATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

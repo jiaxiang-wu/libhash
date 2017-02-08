@@ -14,13 +14,13 @@ paraStr.logDirPath = './log';
 paraStr.rltDirPath = './result';
 
 % hashing model training
-paraStr.hashBitCnt = 16; % # of hashing bits
+paraStr.hashBitCnt = 64; % # of hashing bits
 paraStr.trnWithLrnSet = true; % train with the learning subset
 
 % hashing model evaluation
 paraStr.smplCntQry = 1000; % # of query samples to be evaluated
-paraStr.evaPrtl = 'HashLkup'; % evaluation protocol: 'HammRank' / 'HashLkup'
-paraStr.linkCntPerQry = [100, 1000, 10000, 20000]; % # of GT-links per query
+paraStr.evaPrtl = 'HammRank'; % evaluation protocol: 'HammRank' / 'HashLkup'
+paraStr.linkCntPerQry = [100, 1000, 10000]; % # of GT-links per query
 paraStr.evaPosLst = 10 .^ (0 : 4); % evaluation positions
 %paraStr.evaPosLst = 2 .^ (0 : 15); % evaluation positions
 paraStr.hashLkupRad = 2; % hashing look-up's radius
