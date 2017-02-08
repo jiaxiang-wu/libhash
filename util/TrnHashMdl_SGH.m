@@ -52,6 +52,6 @@ distMat = CalcDistMat(param.anchMat, dataMat, 'ecld');
 krnlMat = bsxfun(@minus, exp(-distMat .^ 2 / param.delta / 2), param.bias');
 
 % compute the binary code matrix
-codeMat = (param.projMat' * krnlMat > 0) * 2 - 1;
+codeMat = uint8(param.projMat' * krnlMat > 0);
 
 end

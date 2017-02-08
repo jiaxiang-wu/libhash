@@ -58,13 +58,13 @@ lkupTbl = generate_lut(param.sSpcDim);
 smplCnt = size(dataMatRota, 1);
 featCnt = size(dataMatRota, 2);
 featCntPerSSpc = featCnt / param.sSpcCnt;
-codeMat = zeros(param.sSpcDim * param.sSpcCnt, smplCnt);
+codeMat = zeros(param.sSpcDim * param.sSpcCnt, smplCnt, 'uint8');
 for sSpcIdx = 1 : param.sSpcCnt
   featIdxs = (1 : featCntPerSSpc) + featCntPerSSpc * (sSpcIdx - 1);
   codeIdxs = (1 : param.sSpcDim) + param.sSpcDim * (sSpcIdx - 1);
   distMat = sqdist(dataMatRota(:, featIdxs)', param.ctrdLst{sSpcIdx}');
   [~, ctrdIdxs] = min(distMat, [], 2);
-  codeMat(codeIdxs, :) = lkupTbl(ctrdIdxs, :)' * 2 - 1;
+  codeMat(codeIdxs, :) = lkupTbl(ctrdIdxs, :)';
 end
 
 end

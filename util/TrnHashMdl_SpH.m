@@ -35,6 +35,6 @@ function codeMat = HashFuncImpl(dataMat, param)
 
 % calculate binary codes
 distMat = CalcDistMat(param.cntrMat', dataMat, 'ecld');
-codeMat = bsxfun(@lt, distMat, param.radsVec) * 2 - 1;
+codeMat = uint8(bsxfun(@lt, distMat, param.radsVec));
 
 end

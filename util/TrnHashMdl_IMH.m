@@ -51,6 +51,6 @@ function codeMat = HashFuncImpl(dataMat, param)
 % compute the binary code matrix
 dataMat = normalize(dataMat'); % transposed
 zetaMat = get_Z(dataMat, param.anchMat, param.options.s, param.sigma);
-codeMat = (zetaMat * param.embed > 0)' * 2 - 1;
+codeMat = uint8(zetaMat * param.embed > 0)';
 
 end

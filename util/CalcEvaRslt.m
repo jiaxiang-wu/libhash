@@ -22,9 +22,10 @@ smplCntQry = size(codeMatQry, 2);
 % remove invalid evaluation positions
 paraStr.evaPosLst = paraStr.evaPosLst(paraStr.evaPosLst <= smplCntDtb);
 
-% convert -1/1 binary codes to {0, ..., 2 ^ n - 1} compact codes
-codeMatDtb = mex_CvtHashToCompCode(uint8((codeMatDtb + 1) / 2));
-codeMatQry = mex_CvtHashToCompCode(uint8((codeMatQry + 1) / 2));
+% convert 0/1 binary codes to {0, ..., 2 ^ n - 1} compact codes
+assert(isa(codeMatDtb, 'uint8') && isa(codeMatQry, 'uint8'));
+codeMatDtb = mex_CvtHashToCompCode(codeMatDtb);
+codeMatQry = mex_CvtHashToCompCode(codeMatQry);
 
 % evaluate ANN search performance for each query
 dataMatLnk = dataMatLnk + 1; % 0-based indexing to 1-based indexing

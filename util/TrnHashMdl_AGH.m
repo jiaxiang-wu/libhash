@@ -55,6 +55,6 @@ else
   codeMat = TwoLayerAGH_Test(...
       dataMat', param.anchMat', param.W, param.thres, param.s, param.sigma);
 end
-codeMat = (codeMat' > 0) * 2 - 1;
+codeMat = uint8(codeMat > 0)';
 
 end

@@ -33,6 +33,6 @@ function codeMat = HashFuncImpl(dataMat, param)
 
 % call <compressSH> to calculate binary codes
 [~, codeMat] = compressSH(dataMat', param);
-codeMat = (codeMat' > 0) * 2 - 1;
+codeMat = uint8(codeMat > 0)';
 
 end
