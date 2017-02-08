@@ -1,7 +1,7 @@
 close all; clearvars; clc;
 
 % initialize constant variables
-kMthdName = 'IMH';
+kMthdName = 'SGH';
 kEvalFPath = './scEvaHashMthd.m';
 kParaFPath = './util/InitParaStr.m';
 
@@ -18,10 +18,11 @@ for hashBitCnt = [16, 32, 48, 64]
   pause(1); % wait for the <sed> command to take effect
   try
     scEvaHashMthd;
-    system(sprintf('grep meanAP ./log/%s.*.log >> ./batch.log', kMthdName));
+    system(sprintf('grep "meanAP =" ./log/%s.*.log >> ./batch.log', kMthdName));
+    system(sprintf('grep "recall =" ./log/%s.*.log >> ./batch.log', kMthdName));
   catch
-    fprintf('[ERROR] evaluation failed: %d / %d\n', hashBitCnt, linkCntPerQry);
-    system('echo "meanAP: n/a" >> ./batch.log');
+    fprintf('[ERROR] evaluation failed: %d\n', hashBitCnt);
+    system('echo "meanAP/recall: n/a" >> ./batch.log');
   end
 end
 system('cat ./batch.log');
