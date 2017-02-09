@@ -1,5 +1,6 @@
 *~
 *.bak
+*.jpg
 batch.log
 /log
 /result

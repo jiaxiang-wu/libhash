@@ -88,7 +88,7 @@ kLineSpecLst = [...
   {'m-o'}, {'m-.s'}, {'m--*'}, {'y-o'}, {'y-.s'}, {'y--*'}];
 
 % plot 3 sub-figures, corresponding to different number of GT-links
-gcf = figure('Position', [100, 100, 1024, 576]);
+gcf = figure('Position', [100, 100, 1024, 320]);
 for plotIdx = 1 : 3
   h = subplot('Position', [0.05 + 0.27 * (plotIdx - 1), 0.12, 0.23, 0.8]);
   h.XTick = tbl.hashBitCntLst;
@@ -100,7 +100,7 @@ for plotIdx = 1 : 3
   hold off;
 end
 h = legend([tbl.mthdInfoLst.mthdName]);
-set(h, 'Position', [0.85, 0.35, 0.1, 0.4]);
+set(h, 'Position', [0.85, 0.1, 0.1, 0.8]);
 
 % save the figure to file
 set(gcf, 'Color', 'White');

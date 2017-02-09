@@ -31,11 +31,11 @@ Please note: The hyper-parameters of these hashing methods are not carefully tun
 
 MeanAP scores for Hamming ranking (left: top-100 NNs; middle: top-1K NNs; right: top-10K NNs):
 
-![](doc/SIFT1M_HammRank.jpg)
+[![SIFT1M_HammRank.jpg](https://s30.postimg.org/nvx5mcwr5/SIFT1_M_Hamm_Rank.jpg)](https://postimg.org/image/6ve9dojpp/)
 
 Recall scores for radius-2 hash look-up (left: top-100 NNs; middle: top-1K NNs; right: top-10K NNs):
 
-![](doc/SIFT1M_HashLkup.jpg)
+[![SIFT1M_HashLkup.jpg](https://s23.postimg.org/88zvlcpaz/SIFT1_M_Hash_Lkup.jpg)](https://postimg.org/image/3zv5j6m1j/)
 
 ## GIST-1M
 
