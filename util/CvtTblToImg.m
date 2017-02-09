@@ -103,6 +103,7 @@ h = legend([tbl.mthdInfoLst.mthdName]);
 set(h, 'Position', [0.85, 0.35, 0.1, 0.4]);
 
 % save the figure to file
+set(gcf, 'Color', 'White');
 export_fig(gcf, filePath, '-painters', '-jpg', '-r300');
 
 end
