@@ -20,6 +20,6 @@ paraStr.rltFilePath = sprintf('%s/%s.%s.mat', ...
 % configure hyper-parameters for the training process
 paraStr.anchCnt = 1000; % # of anchor points
 paraStr.iterCnt = 10; % # of k-means clustering iterations to select anchors
-paraStr.lrnMthd = 'tSNE'; % LE (Laplacian Eigenmaps) / tSNE
+paraStr.lrnMthd = 'LE'; % LE (Laplacian Eigenmaps) / tSNE
 
 end

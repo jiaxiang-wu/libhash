@@ -13,7 +13,7 @@ copyfile(kParaFPath, [kParaFPath, '.bak']);
 system('rm -f ./batch.log && touch ./batch.log');
 system(sprintf('sed -i ''s/close\\ all/%%close\\ all/g'' %s', kEvalFPath));
 system(sprintf('sed -i "/kMthdName/s/''[A-Za-z]\\+''/''%s''/g" %s', kMthdName, kEvalFPath));
-for hashBitCnt = [16, 32, 48, 64]
+for hashBitCnt = [8, 16, 32, 64]
   system(sprintf('sed -i ''/hashBitCnt/s/[0-9]\\+/%d/g'' %s', hashBitCnt, kParaFPath));
   pause(1); % wait for the <sed> command to take effect
   try
