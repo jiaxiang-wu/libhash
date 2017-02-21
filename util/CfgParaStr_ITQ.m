@@ -19,5 +19,6 @@ paraStr.rltFilePath = sprintf('%s/%s.%s.mat', ...
 
 % configure hyper-parameters for the training process
 paraStr.iterCnt = 25; % # of iterations
+paraStr.smplCntCovr = 100000; % # of samples to estimate the covariance matrix
 
 end
