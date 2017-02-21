@@ -15,7 +15,7 @@ paraStr.rltDirPath = './result';
 
 % hashing model training
 paraStr.hashBitCnt = 64; % # of hashing bits
-paraStr.trnWithLrnSet = true; % train with the learning subset
+paraStr.trnWithLrnSet = false; % train with the learning subset
 
 % hashing model evaluation
 paraStr.smplCntQry = 1000; % # of query samples to be evaluated
