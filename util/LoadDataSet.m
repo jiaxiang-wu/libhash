@@ -44,7 +44,7 @@ smplCntQry = size(dtSet.featMatQry, 2);
 
 % load ground-truth matches or category labels
 if exist('filePathLnk', 'var')
-  dtSet.linkMat = LoadVecsFile(filePathLnk);
+  dtSet.linkMat = LoadVecsFile(filePathLnk) + 1; % 0-based to 1-based indexing
 elseif exist('filePathLbl', 'var')
   lablVec = LoadVecsFile(filePathLbl);
   dtSet.lablVecQry = lablVec(1 : smplCntQry);

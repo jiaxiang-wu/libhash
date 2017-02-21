@@ -41,10 +41,10 @@ fprintf('[INFO] calculating binary codes - DONE (%.4f s)\n', toc);
 tic;
 fprintf('[INFO] evaluating the hashing model\n');
 if ~isempty(dtSet.linkMat)
-  evaRslt = CalcEvaRslt_Link(dtSet.linkMat, codeMatDtb, codeMatQry, paraStr);
+  evaRslt = CalcEvaRslt(codeMatDtb, codeMatQry, paraStr, dtSet.linkMat);
 else
-  evaRslt = CalcEvaRslt_Labl(...
-    dtSet.lablVecDtb, dtSet.lablVecQry, codeMatDtb, codeMatQry, paraStr);
+  evaRslt = CalcEvaRslt(...
+    codeMatDtb, codeMatQry, paraStr, dtSet.lablVecDtb, dtSet.lablVecQry);
 end
 save(paraStr.rltFilePath, 'evaRslt');
 fprintf('[INFO] evaluating the hashing model - DONE (%.4f s)\n', toc);
