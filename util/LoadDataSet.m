@@ -21,14 +21,16 @@ for fileIdx = 1 : numel(fileStrLst)
   filePath = [paraStr.dataDirPath, '/', fileStrLst(fileIdx).name];
   if ~isempty(strfind(filePath, 'learn'))
     filePathLstLrn = [filePathLstLrn; {filePath}];
+  elseif ~isempty(strfind(filePath, 'base_label'))
+    filePathLblDtb = filePath;
   elseif ~isempty(strfind(filePath, 'base'))
     filePathLstDtb = [filePathLstDtb; {filePath}];
+  elseif ~isempty(strfind(filePath, 'query_label'))
+    filePathLblQry = filePath;
   elseif ~isempty(strfind(filePath, 'query'))
     filePathQry = filePath;
   elseif ~isempty(strfind(filePath, 'groundtruth'))
     filePathLnk = filePath;
-  elseif ~isempty(strfind(filePath, 'label'))
-    filePathLbl = filePath;
   end
 end
 sort(filePathLstLrn);
@@ -42,15 +44,14 @@ dtSet.featMatDtb = LoadVecsFiles(filePathLstDtb);
 dtSet.featMatQry = LoadVecsFile(filePathQry);
 smplCntQry = size(dtSet.featMatQry, 2);
 
-% load ground-truth matches or category labels
-if exist('filePathLnk', 'var')
+% load category labels (in prior) or ground-truth matches
+if exist('filePathLblDtb', 'var') && exist('filePathLblQry', 'var')
+  dtSet.lablVecDtb = LoadVecsFile(filePathLblDtb);
+  dtSet.lablVecQry = LoadVecsFile(filePathLblQry);
+elseif exist('filePathLnk', 'var')
   dtSet.linkMat = LoadVecsFile(filePathLnk) + 1; % 0-based to 1-based indexing
-elseif exist('filePathLbl', 'var')
-  lablVec = LoadVecsFile(filePathLbl);
-  dtSet.lablVecQry = lablVec(1 : smplCntQry);
-  dtSet.lablVecDtb = lablVec(smplCntQry + 1 : end);
 else
-  fprintf('[ERROR] either GT-matches of labels must be provided\n');
+  fprintf('[ERROR] either labels or GT-matches must be provided\n');
 end
 
 % remove unused query samples, and their GT-matches (or labels)
