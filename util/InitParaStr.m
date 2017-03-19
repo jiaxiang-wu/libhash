@@ -21,8 +21,8 @@ paraStr.trnWithLrnSet = false; % train with the learning subset
 paraStr.smplCntQry = 1000; % # of query samples to be evaluated
 paraStr.evaPrtl = 'HammRank'; % evaluation protocol: 'HammRank' / 'HashLkup'
 paraStr.linkCntPerQry = -1; % # of GT-links per query (-1: unlimited)
-paraStr.evaPosLst = 10 .^ (0 : 4); % evaluation positions
-%paraStr.evaPosLst = 2 .^ (0 : 15); % evaluation positions
+%paraStr.evaPosLst = 10 .^ (0 : 4); % evaluation positions
+paraStr.evaPosLst = 2 .^ (0 : 20); % evaluation positions
 paraStr.hashLkupRad = 2; % hashing look-up's radius
 paraStr.smplCntRtrv = max(paraStr.evaPosLst); % # of retrieved samples
 
