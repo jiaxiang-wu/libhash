@@ -7,7 +7,7 @@ function paraStr = InitParaStr()
 %   paraStr: struct (hyper-parameters)
 
 % file paths
-paraStr.dataSetName = 'MNIST8M';
+paraStr.dataSetName = 'CIFAR10';
 paraStr.rootDirPath = '/data/jxwu/ANN.Search';
 paraStr.dataDirPath = [paraStr.rootDirPath, '/', paraStr.dataSetName];
 paraStr.logDirPath = './log';
