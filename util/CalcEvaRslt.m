@@ -51,15 +51,18 @@ for smplIdxQry = 1 : smplCntQry
     paraStr.linkCntPerQry = numel(linkLst);
   end
   
+  % override default values (-1) in <paraStr.linkCntPerQry>
+  linkCntLst = paraStr.linkCntPerQry;
+  linkCntLst(linkCntLst == -1) = numel(linkLst);
+  
   % compute the precision/recall@T and meanAP scores
   distLst = mex_CalcHammDist(codeMatQry(:, smplIdxQry), codeMatDtb);
   switch paraStr.evaPrtl
     case 'HammRank'
-      evaRsltNew = EvaHammRank(...
-          distLst, linkLst, paraStr.linkCntPerQry, paraStr.evaPosLst);
+      evaRsltNew = EvaHammRank(distLst, linkLst, linkCntLst, paraStr.evaPosLst);
     case 'HashLkup'
       evaRsltNew = EvaHashLkup(...
-          distLst, linkLst, paraStr.linkCntPerQry, paraStr.hashLkupRad);
+        distLst, linkLst, linkCntLst, paraStr.hashLkupRad);
   end
   evaRslt = UpdtEvaRslt(evaRslt, evaRsltNew, paraStr);
 end

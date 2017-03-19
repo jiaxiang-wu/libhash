@@ -15,7 +15,7 @@ smplCnt = size(featMat, 2);
 
 % calculate the mean feature vector and covariance matrix
 param.meanVec = mean(featMat, 2);
-smplIdxsCovr = sort(randperm(smplCnt, paraStr.smplCntCovr));
+smplIdxsCovr = sort(randperm(smplCnt, min(smplCnt, paraStr.smplCntCovr)));
 covrMat = cov(single(featMat(:, smplIdxsCovr))');
 
 % determine the initial projection matrix
