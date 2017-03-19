@@ -10,6 +10,10 @@ kMthdName = 'LSH';
 
 % initialize parameters for the specified hashing method
 paraStr = eval(sprintf('CfgParaStr_%s();', kMthdName));
+paraStr.logFilePath = sprintf('%s/%s_%s_%d.log', paraStr.logDirPath, ...
+  paraStr.mthdName, paraStr.dataSetName, paraStr.hashBitCnt);
+paraStr.rltFilePath = sprintf('%s/%s_%s_%d.mat', paraStr.rltDirPath, ...
+  paraStr.mthdName, paraStr.dataSetName, paraStr.hashBitCnt);
 
 % enable diary output
 system(sprintf('rm -rf %s', paraStr.logFilePath));

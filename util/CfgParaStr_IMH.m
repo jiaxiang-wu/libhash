@@ -12,10 +12,6 @@ paraStr = InitParaStr();
 % configure basic parameters
 paraStr.mthdName = 'IMH'; % method name
 paraStr.trnFuncHndl = @TrnHashMdl_IMH; % training function
-paraStr.logFilePath = sprintf('%s/%s.%s.log', ...
-    paraStr.logDirPath, paraStr.mthdName, paraStr.dataSetName);
-paraStr.rltFilePath = sprintf('%s/%s.%s.mat', ...
-    paraStr.rltDirPath, paraStr.mthdName, paraStr.dataSetName);
 
 % configure hyper-parameters for the training process
 paraStr.anchCnt = 1000; % # of anchor points

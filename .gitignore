@@ -1,6 +1,5 @@
 *~
 *.bak
 *.jpg
-batch.log
-/log
-/result
+*.log
+*.mat
