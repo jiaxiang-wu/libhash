@@ -48,7 +48,6 @@ for smplIdxQry = 1 : smplCntQry
     linkLst = linkMat(:, smplIdxQry);
   else
     linkLst = find(lablVecDtb == lablVecQry(smplIdxQry));
-    paraStr.linkCntPerQry = numel(linkLst);
   end
   
   % override default values (-1) in <paraStr.linkCntPerQry>
@@ -89,6 +88,7 @@ switch paraStr.evaPrtl
     evaRslt.reclMat = zeros(evaPosCnt, numel(paraStr.linkCntPerQry));
     evaRslt.mapVec = zeros(1, numel(paraStr.linkCntPerQry));
   case 'HashLkup'
+    evaRslt.precVec = zeros(1, numel(paraStr.linkCntPerQry));
     evaRslt.reclVec = zeros(1, numel(paraStr.linkCntPerQry));
 end
 
@@ -113,6 +113,7 @@ switch paraStr.evaPrtl
     evaRslt.reclMat = presRat * evaRslt.reclMat + updtRat * evaRsltNew.reclMat;
     evaRslt.mapVec = presRat * evaRslt.mapVec + updtRat * evaRsltNew.mapVec;
   case 'HashLkup'
+    evaRslt.precVec = presRat * evaRslt.precVec + updtRat * evaRsltNew.precVec;
     evaRslt.reclVec = presRat * evaRslt.reclVec + updtRat * evaRsltNew.reclVec;
 end
 evaRslt.smplCntQry = evaRslt.smplCntQry + 1;
@@ -142,6 +143,7 @@ switch paraStr.evaPrtl
   case 'HashLkup'
     for idx = 1 : numel(paraStr.linkCntPerQry)
       fprintf('[INFO] # of GT-matches: %d\n', paraStr.linkCntPerQry(idx));
+      fprintf('[INFO] precis = %f\n', evaRslt.precVec(idx));
       fprintf('[INFO] recall = %f\n', evaRslt.reclVec(idx));
     end
 end

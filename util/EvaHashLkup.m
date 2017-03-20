@@ -10,6 +10,7 @@ function evaRslt = EvaHashLkup(distLst, linkLst, linkCntLst, hashLkupRad)
 %   evaRslt: struct (evaluation results)
 
 % initialize arrays to store evaluation results
+evaRslt.precVec = zeros(1, numel(linkCntLst));
 evaRslt.reclVec = zeros(1, numel(linkCntLst));
 
 % evaluate w.r.t. different number of ground-truth matches
@@ -17,6 +18,7 @@ for idx = 1 : numel(linkCntLst)
   % compute the recall score
   linkCnt = linkCntLst(idx);
   hitCnt = sum(ismember(find(distLst <= hashLkupRad), linkLst(1 : linkCnt)));
+  evaRslt.precVec(idx) = hitCnt / sum(distLst <= hashLkupRad);
   evaRslt.reclVec(idx) = hitCnt / linkCnt;
 end
 
