@@ -32,8 +32,8 @@ else
 end
 
 % create the hashing function handler
-projMatFnl = projMat * eigVecLst';
-model.hashFunc = ...
-    @(dataMat)(uint8(projMatFnl * bsxfun(@minus, dataMat, meanVec) > 0));
+param.meanVec = meanVec;
+param.projMat = projMat * eigVecLst';
+model.hashFunc = @(dataMat)(HashFuncImpl_Std(dataMat, param));
 
 end

@@ -14,7 +14,7 @@ fprintf('[INFO] entering TrnHashMdl_ITQ()\n');
 smplCnt = size(featMat, 2);
 
 % calculate the mean feature vector and covariance matrix
-param.meanVec = mean(featMat, 2);
+meanVec = mean(featMat, 2);
 smplIdxsCovr = sort(randperm(smplCnt, min(smplCnt, paraStr.smplCntCovr)));
 covrMat = cov(single(featMat(:, smplIdxsCovr))');
 
@@ -31,7 +31,7 @@ for batcIdx = 1 : batcCnt
   smplIdxEnd = min(batcIdx * batcSiz, smplCnt);
   smplIdxs = (smplIdxBeg : smplIdxEnd);
   dataMatPrj(:, smplIdxs) = ...
-    projMatPri * bsxfun(@minus, single(featMat(:, smplIdxs)), param.meanVec);
+    projMatPri * bsxfun(@minus, single(featMat(:, smplIdxs)), meanVec);
 end
 
 % run block coordinate descent to update <B> and <R>
@@ -50,36 +50,10 @@ for iterIdx = 1 : paraStr.iterCnt
   resdErr = mean(resdMat(:) .^ 2);
   fprintf('residual error (AVE) = %.4e\n', resdErr);
 end
-param.projMat = projMatSec * projMatPri;
 
 % create the hashing function handler
-model.hashFunc = @(featMat)(HashFuncImpl(featMat, param));
-
-end
-
-function codeMat = HashFuncImpl(featMat, param)
-% INTRO
-%   calculate binary codes with pre-trained LSH parameters
-% INPUT
-%   featMat: D x N (feature matrix)
-%   param: struct (pre-trained LSH parameters)
-% OUTPUT
-%   codeMat: R x N (binary code matrix)
-
-% obtain basic variables
-hashBitCnt = size(param.projMat, 1);
-smplCnt = size(featMat, 2);
-
-% compute the binary code matrix in a mini-batch manner
-batcSiz = 100000;
-batcCnt = ceil(smplCnt / batcSiz);
-codeMat = zeros(hashBitCnt, smplCnt, 'uint8');
-for batcIdx = 1 : batcCnt
-  smplIdxBeg = (batcIdx - 1) * batcSiz + 1;
-  smplIdxEnd = min(batcIdx * batcSiz, smplCnt);
-  smplIdxs = (smplIdxBeg : smplIdxEnd);
-  codeMat(:, smplIdxs) = param.projMat ...
-    * bsxfun(@minus, single(featMat(:, smplIdxs)), param.meanVec) > 0;
-end
+param.meanVec = meanVec;
+param.projMat = projMatSec * projMatPri;
+model.hashFunc = @(featMat)(HashFuncImpl_Std(featMat, param));
 
 end
