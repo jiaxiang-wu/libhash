@@ -17,9 +17,12 @@ evaRslt.reclVec = zeros(1, numel(linkCntLst));
 for idx = 1 : numel(linkCntLst)
   % compute the recall score
   linkCnt = linkCntLst(idx);
-  hitCnt = sum(ismember(find(distLst <= hashLkupRad), linkLst(1 : linkCnt)));
-  evaRslt.precVec(idx) = hitCnt / sum(distLst <= hashLkupRad);
-  evaRslt.reclVec(idx) = hitCnt / linkCnt;
+  rtrvCnt = sum(distLst <= hashLkupRad);
+  if rtrvCnt ~= 0
+    hitCnt = sum(ismember(find(distLst <= hashLkupRad), linkLst(1 : linkCnt)));
+    evaRslt.precVec(idx) = hitCnt / rtrvCnt;
+    evaRslt.reclVec(idx) = hitCnt / linkCnt;
+  end
 end
 
 end
