@@ -2,7 +2,7 @@
 
 This project aims at intergrating popular hashing-based ANN search methods into one unified framework for more convenient performance comparison and further improvement.
 
-We have now included the following methods:
+We have now included following unsupervised methods:
 
 * **LSH**: Locality Sensitive Hashing (SCG '04)
 * **SH**: Spectral Hashing (NIPS '08)
@@ -13,6 +13,10 @@ We have now included the following methods:
 * **IMH**: Inductive Manifold Hashing (CVPR '13)
 * **KMH**: K-means Hashing (CVPR '13)
 * **SGH**: Scalable Graph Hashing (IJCAI '15)
+
+and following supervised methods:
+
+* **SDH**: Supervised Discrete Hashing (CVPR '15)
 
 Many thanks to the above methods' authors for their research and kindly provided source code.
 
