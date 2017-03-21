@@ -4,7 +4,7 @@ close all; clearvars; clc;
 addpath('./util');
 
 % specify the hashing method to be evaluated
-kMthdName = 'LSH';
+kMthdName = 'SDH';
 
 %%% PREPARATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -24,13 +24,22 @@ dtSet = LoadDataSet(paraStr);
 
 %%% METHOD EVALUATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% obtain label vector (or affinity matrix), and pack into a cell array
+extrInfo = cell(2, 1);
+if paraStr.trnWithLablVec
+  extrInfo{1} = dtSet.lablVecDtb;
+end
+if paraStr.trnWithAfntMat
+  extrInfo{2} = dtSet.afntMatDtb;
+end
+
 % train a hashing model
 tic;
 fprintf('[INFO] training a hashing model\n');
 if paraStr.trnWithLrnSet
-  model = paraStr.trnFuncHndl(dtSet.featMatLrn, paraStr);
+  model = paraStr.trnFuncHndl(dtSet.featMatLrn, paraStr, extrInfo);
 else
-  model = paraStr.trnFuncHndl(dtSet.featMatDtb, paraStr);
+  model = paraStr.trnFuncHndl(dtSet.featMatDtb, paraStr, extrInfo);
 end
 fprintf('[INFO] training a hashing model - DONE (%.4f s)\n', toc);
 

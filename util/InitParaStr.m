@@ -16,6 +16,8 @@ paraStr.rltDirPath = './result';
 % hashing model training
 paraStr.hashBitCnt = 64; % # of hashing bits
 paraStr.trnWithLrnSet = false; % train with the learning subset
+paraStr.trnWithLablVec = false; % train with the label vector
+paraStr.trnWithAfntMat = false; % train with the affinity matrix
 
 % hashing model evaluation
 paraStr.smplCntQry = 1000; % # of query samples to be evaluated
