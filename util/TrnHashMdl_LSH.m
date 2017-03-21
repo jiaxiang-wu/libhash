@@ -1,4 +1,4 @@
-function model = TrnHashMdl_LSH(featMat, paraStr)
+function model = TrnHashMdl_LSH(featMat, paraStr, ~)
 % INTRO
 %   train a hashing model of LSH
 % INPUT

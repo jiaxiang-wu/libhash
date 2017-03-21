@@ -1,4 +1,4 @@
-function model = TrnHashMdl_SH(dataMat, paraStr)
+function model = TrnHashMdl_SH(dataMat, paraStr, ~)
 % INTRO
 %   train a hashing model of SH
 % INPUT

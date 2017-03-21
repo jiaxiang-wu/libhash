@@ -1,4 +1,4 @@
-function model = TrnHashMdl_IsoH(dataMat, paraStr)
+function model = TrnHashMdl_IsoH(dataMat, paraStr, ~)
 % INTRO
 %   train a hashing model of IsoH
 % INPUT

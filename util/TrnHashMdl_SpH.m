@@ -1,4 +1,4 @@
-function model = TrnHashMdl_SpH(dataMat, paraStr)
+function model = TrnHashMdl_SpH(dataMat, paraStr, ~)
 % INTRO
 %   train a hashing model of SpH
 % INPUT

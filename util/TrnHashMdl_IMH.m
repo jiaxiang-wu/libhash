@@ -1,4 +1,4 @@
-function model = TrnHashMdl_IMH(dataMat, paraStr)
+function model = TrnHashMdl_IMH(dataMat, paraStr, ~)
 % INTRO
 %   train a hashing model of IMH
 % INPUT

@@ -1,4 +1,4 @@
-function model = TrnHashMdl_ITQ(featMat, paraStr)
+function model = TrnHashMdl_ITQ(featMat, paraStr, ~)
 % INTRO
 %   train a hashing model of ITQ
 % INPUT

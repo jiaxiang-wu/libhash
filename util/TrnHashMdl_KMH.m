@@ -1,4 +1,4 @@
-function model = TrnHashMdl_KMH(dataMat, paraStr)
+function model = TrnHashMdl_KMH(dataMat, paraStr, ~)
 % INTRO
 %   train a hashing model of KMH
 % INPUT
