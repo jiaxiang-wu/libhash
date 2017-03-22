@@ -27,7 +27,6 @@ paraStr.reguCoeffClss = 1e-1; % regularizer coefficient of classification
 paraStr.pnltCoeffQuan = 3e-3; % penalty coefficient of quantization error
 paraStr.iterCntCode = 3; % # of iterations to update the binary codes
 paraStr.codeBlckLen = inf; % # of binary codes in block for joint optimization
-paraStr.codeInitMthd = 'proj'; % binary codes' init. method: 'rand' / 'proj'
 paraStr.projInitScal = 2e+0; % projection matrix's init. numerical scale
 paraStr.lbfgsIterCnt = 50; % # of L-BFGS iterations
 paraStr.decyCoeffPart = 0.68; % decay coefficient of partitions

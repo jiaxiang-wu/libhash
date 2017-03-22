@@ -42,20 +42,13 @@ meanVec = mean(featMatTrn, 2);
 featMatCen = bsxfun(@minus, featMatTrn, meanVec);
 
 % randomly initialize binary codes for all training instances
-if strcmp(paraStr.codeInitMthd, 'rand')
-  projMat = [];
-  scalVec = [];
-  biasVec = [];
-  codeMat = (randn(paraStr.hashBitCnt, instCntTrn) > 0) * 2 - 1;
-else
-  featNrmAve = mean(sqrt(sum(featMatCen .^ 2, 1)));
-  projMat = randn(size(featMatCen, 1), paraStr.hashBitCnt);
-  scalVec = ones(paraStr.hashBitCnt, 1) * paraStr.projInitScal / featNrmAve;
-  biasVec = randn(paraStr.hashBitCnt, 1) * 1e-2;
-  actvMat = bsxfun(@plus, bsxfun(@times, FracPower(...
-      projMat' * featMatCen, paraStr.decyCoeffPart), scalVec), biasVec);
-  codeMat = (cos(actvMat) > 0) * 2 - 1;
-end
+featNrmAve = mean(sqrt(sum(featMatCen .^ 2, 1)));
+projMat = randn(size(featMatCen, 1), paraStr.hashBitCnt);
+scalVec = ones(paraStr.hashBitCnt, 1) * paraStr.projInitScal / featNrmAve;
+biasVec = randn(paraStr.hashBitCnt, 1) * 1e-2;
+actvMat = bsxfun(@plus, bsxfun(@times, FracPower(...
+    projMat' * featMatCen, paraStr.decyCoeffPart), scalVec), biasVec);
+codeMat = (cos(actvMat) > 0) * 2 - 1;
 
 % compute the initial classification weighting matrix
 clssReguMat = paraStr.reguCoeffClss * eye(paraStr.hashBitCnt);
