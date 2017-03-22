@@ -19,8 +19,18 @@ paraStr.rltFilePath = sprintf('%s/%s_%s_%d.mat', paraStr.rltDirPath, ...
 system(sprintf('rm -rf %s', paraStr.logFilePath));
 diary(paraStr.logFilePath);
 
-% load dataset
+% load dataset, and apply normalization when required
 dtSet = LoadDataSet(paraStr);
+if paraStr.enblFeatNorm
+  if paraStr.trnWithLrnSet
+    normFunc = GnrtNormFunc(dtSet.featMatLrn);
+    featMatLrn = normFunc(dtSet.featMatLrn);
+  else
+    normFunc = GnrtNormFunc(dtSet.featMatDtb);
+  end
+  dtSet.featMatDtb = normFunc(dtSet.featMatDtb);
+  dtSet.featMatQry = normFunc(dtSet.featMatQry);
+end
 
 %%% METHOD EVALUATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

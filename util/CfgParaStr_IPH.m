@@ -15,6 +15,7 @@ paraStr.trnFuncHndl = @TrnHashMdl_IPH; % training function
 
 % configure hyper-parameters for the training process
 paraStr.trnWithLablVec = true; % train with the label vector
+paraStr.enblFeatNorm = true; % enable feature normalization
 paraStr.iterCnt = 25; % # of iterations
 paraStr.optTlrtLmt = 1e-4; % minimal allowed improvement to continue iterations
 paraStr.instCntTrn = inf; % # of training points
