@@ -26,14 +26,7 @@ smplCntTrn = min(smplCnt, paraStr.smplCntTrn);
 smplIdxLstTrn = sort(randperm(smplCnt, smplCntTrn));
 featMatTrn = featMat(:, smplIdxLstTrn);
 lablVecTrn = extrInfo{1}(smplIdxLstTrn);
-
-% expand the label vector into a 0/1 indicator matrix
-clssIdLst = unique(lablVecTrn);
-clssIdCnt = numel(clssIdLst);
-lablMatTrn = zeros(clssIdCnt, smplCntTrn);
-for clssIdIdx = 1 : clssIdCnt
-  lablMatTrn(clssIdIdx, lablVecTrn == clssIdLst(clssIdIdx)) = 1;
-end
+lablMatTrn = CvtLablVecToMat(lablVecTrn);
 
 % remove the mean vector from the data matrix
 meanVec = mean(featMatTrn, 2);
