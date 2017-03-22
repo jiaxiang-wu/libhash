@@ -4,7 +4,7 @@ close all; clearvars; clc;
 addpath('./util');
 
 % specify the hashing method to be evaluated
-kMthdName = 'MCSDH';
+kMthdName = 'SDH';
 
 %%% PREPARATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -21,16 +21,6 @@ diary(paraStr.logFilePath);
 
 % load dataset, and apply normalization when required
 dtSet = LoadDataSet(paraStr);
-if paraStr.enblFeatNorm
-  if paraStr.trnWithLrnSet
-    normFunc = GnrtNormFunc(dtSet.featMatLrn);
-    featMatLrn = normFunc(dtSet.featMatLrn);
-  else
-    normFunc = GnrtNormFunc(dtSet.featMatDtb);
-  end
-  dtSet.featMatDtb = normFunc(dtSet.featMatDtb);
-  dtSet.featMatQry = normFunc(dtSet.featMatQry);
-end
 
 %%% METHOD EVALUATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

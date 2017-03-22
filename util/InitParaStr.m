@@ -18,7 +18,6 @@ paraStr.hashBitCnt = 64; % # of hashing bits
 paraStr.trnWithLrnSet = false; % train with the learning subset
 paraStr.trnWithLablVec = false; % train with the label vector
 paraStr.trnWithAfntMat = false; % train with the affinity matrix
-paraStr.enblFeatNorm = false; % enable feature normalization or not
 
 % hashing model evaluation
 paraStr.smplCntQry = 1000; % # of query samples to be evaluated
