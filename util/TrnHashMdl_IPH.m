@@ -16,13 +16,16 @@ addpath(genpath('./extern/GradOpt'));
 
 % perform feature normalization and kernelization
 if paraStr.useKernFeat
-  normFunc = @(x)(bsxfun(@times, x, 1 ./ sqrt(sum(x .^ 2, 1))));
-  featMat = normFunc(featMat);
-  anchMat = featMat(:, randperm(size(featMat, 2), paraStr.kernAnchCnt));
+  opts.ctrdCnt = paraStr.kernAnchCnt;
+  opts.iterCnt = 50;
+  opts.ctrdLst = [];
+  opts.initMthd = 'rnd';
+  opts.enblVrbs = true;
+  [anchMat, ~] = KMeansClst(featMat, opts);
   kernFunc = @(x)(...
     exp(-CalcDistMat(anchMat, x, 'ecld') .^ 2 / (2 * paraStr.kernBandWid ^ 2)));
   featMat = kernFunc(featMat);
-  preProcFunc = @(x)(kernFunc(normFunc(x)));
+  preProcFunc = kernFunc;
 else
   normFunc = GnrtNormFunc(featMat);
   featMat = normFunc(featMat);
@@ -90,25 +93,6 @@ for iterIdx = 1 : paraStr.iterCnt
     end
   end
   projMatPrev = projMat;
-  
-  actvMatInit = projMat' * featMatCen;
-  actvMatPowr = FracPower(actvMatInit, paraStr.decyCoeffPart);
-  actvMatScal = bsxfun(@times, actvMatPowr, scalVec);
-  actvMatBias = bsxfun(@plus, actvMatScal, biasVec);
-  
-  subplot(2, 2, 1);
-  plot(sort(actvMatInit(:)));
-  title(sprintf('actvMatInit (%d / %d)', iterIdx, paraStr.iterCnt));
-  subplot(2, 2, 2);
-  plot(sort(actvMatPowr(:)));
-  title(sprintf('actvMatPowr (%d / %d)', iterIdx, paraStr.iterCnt));
-  subplot(2, 2, 3);
-  plot(sort(actvMatScal(:)));
-  title(sprintf('actvMatScal (%d / %d)', iterIdx, paraStr.iterCnt));
-  subplot(2, 2, 4);
-  plot(sort(actvMatBias(:)));
-  title(sprintf('actvMatBias (%d / %d)', iterIdx, paraStr.iterCnt));
-  drawnow;
 end
 
 % create the hashing function handler
