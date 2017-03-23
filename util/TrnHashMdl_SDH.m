@@ -12,16 +12,22 @@ function model = TrnHashMdl_SDH(featMat, paraStr, extrInfo)
 fprintf('[INFO] entering TrnHashMdl_SDH()\n');
 
 % perform feature normalization and kernelization
-smplCnt = size(featMat, 2);
-normFunc = @(x)(bsxfun(@times, x, 1 ./ sqrt(sum(x .^ 2, 1))));
-featMat = normFunc(featMat);
-anchMat = featMat(:, randperm(smplCnt, paraStr.kernAnchCnt));
-kernFunc = @(x)(...
-  exp(-CalcDistMat(anchMat, x, 'ecld') .^ 2 / (2 * paraStr.kernBandWid ^ 2)));
-featMat = kernFunc(featMat);
-preProcFunc = @(x)(kernFunc(normFunc(x)));
+if paraStr.useKernFeat
+  normFunc = @(x)(bsxfun(@times, x, 1 ./ sqrt(sum(x .^ 2, 1))));
+  featMat = normFunc(featMat);
+  anchMat = featMat(:, randperm(size(featMat, 2), paraStr.kernAnchCnt));
+  kernFunc = @(x)(...
+    exp(-CalcDistMat(anchMat, x, 'ecld') .^ 2 / (2 * paraStr.kernBandWid ^ 2)));
+  featMat = kernFunc(featMat);
+  preProcFunc = @(x)(kernFunc(normFunc(x)));
+else
+  normFunc = GnrtNormFunc(featMat);
+  featMat = normFunc(featMat);
+  preProcFunc = normFunc;
+end
 
 % randomly select a subset of instances for training
+smplCnt = size(featMat, 2);
 smplCntTrn = min(smplCnt, paraStr.smplCntTrn);
 smplIdxLstTrn = sort(randperm(smplCnt, smplCntTrn));
 featMatTrn = featMat(:, smplIdxLstTrn);
