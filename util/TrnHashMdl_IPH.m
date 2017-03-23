@@ -96,9 +96,8 @@ for iterIdx = 1 : paraStr.iterCnt
 end
 
 % create the hashing function handler
-model.actvFunc = @(featMat)(ActvFuncImpl(...
+model.hashFunc = @(featMat)(HashFuncImpl(...
   preProcFunc(featMat), meanVec, projMat, scalVec, biasVec, paraStr));
-model.hashFunc = @(featMat)(uint8(cos(model.actvFunc(featMat)) > 0));
 
 end
 
@@ -254,26 +253,25 @@ gradVec = [gradMatProj(:); gradVecScal; gradVecBias];
 
 end
 
-function actvMat = ActvFuncImpl(...
-    featMat, meanVec, projMat, scalVec, biasVec, paraStr)
+function codeMat = ...
+  HashFuncImpl(featMat, meanVec, projMat, scalVec, biasVec, paraStr)
 % INTRO
-%   hashing function
+%   compute the binary code matrix
 % INPUT
-%   dataMat: K x N (feature matrix of instances to be encoded)
+%   dataMat: K x N (feature matrix)
 %   meanVec: K x 1 (mean vector)
 %   projMat: R x K (projection matrix)
 %   scalVec: R x 1 (scale vector)
 %   biasVec: R x 1 (bias vector)
-%   paraStr: structure (parameters for training the retrieval model)
+%   paraStr: struct (hyper-parameters)
 % OUTPUT
-%   actvMat: R x N (activation matrix)
+%   codeMat: R x N (binary code matrix)
 
-% compute the kernelized feature matrix
+% compute the binary code matrix
 featMatCen = bsxfun(@minus, featMat, meanVec);
-
-% obtain the final activation matrix
 actvMat = bsxfun(@plus, bsxfun(@times, FracPower(...
     projMat' * featMatCen, paraStr.decyCoeffPart), scalVec), biasVec);
+codeMat = uint8(cos(actvMat) > 0);
 
 end
 

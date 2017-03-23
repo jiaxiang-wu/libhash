@@ -1,8 +1,8 @@
-function model = TrnHashMdl_MCSDH(dataMat, paraStr, extrInfo)
+function model = TrnHashMdl_MCSDH(featMat, paraStr, extrInfo)
 % INTRO
 %   train a hashing model of MCSDH
 % INPUT
-%   dataMat: D x N (data matrix)
+%   featMat: D x N (feature matrix)
 %   paraStr: struct (hyper-parameters)
 %   extrInfo: 1 x 2 (cell array of label vector and affinity matrix)
 % OUTPUT
@@ -14,47 +14,35 @@ fprintf('[INFO] entering TrnHashMdl_MCSDH()\n');
 % add path for LBFGS-based optimization
 addpath(genpath('./extern/LBFGS'));
 
-% convert <dataMat> to single for compatibility
-dataMat = single(dataMat);
+% perform feature normalization and kernelization
+if paraStr.useKernFeat
+  opts.ctrdCnt = paraStr.kernAnchCnt;
+  opts.iterCnt = 50;
+  opts.ctrdLst = [];
+  opts.initMthd = 'rnd';
+  opts.enblVrbs = true;
+  [anchMat, ~] = KMeansClst(featMat, opts);
+  kernFunc = @(x)(...
+    exp(-CalcDistMat(anchMat, x, 'ecld') .^ 2 / (2 * paraStr.kernBandWid ^ 2)));
+  featMat = kernFunc(featMat);
+  preProcFunc = kernFunc;
+else
+  normFunc = GnrtNormFunc(featMat);
+  featMat = normFunc(featMat);
+  preProcFunc = normFunc;
+end
 
 % randomly select a subset of instances for training
-instCnt = size(dataMat, 2);
-instCntTrn = min(instCnt, paraStr.instCntTrn);
-instIdxLstTrn = sort(randperm(instCnt, instCntTrn));
-dataMatTrn = dataMat(:, instIdxLstTrn);
-lablVecTrn = extrInfo{1}(instIdxLstTrn);
-
-% expand the label vector into a 0/1 indicator matrix
-clssIdLst = unique(lablVecTrn);
-clssIdCnt = numel(clssIdLst);
-lablMatTrn = zeros(clssIdCnt, instCntTrn);
-for clssIdIdx = 1 : clssIdCnt
-  lablMatTrn(clssIdIdx, lablVecTrn == clssIdLst(clssIdIdx)) = 1;
-end
-
-% compute the kernelized feature matrix
-if strcmp(paraStr.krnlFuncType, 'linear')
-  % directly use raw features for hashing function learning
-  featMat = dataMat;
-  
-  % set anchor points and RBF kernel bandwidth as null values
-  dataMatAnc = [];
-  rbfKrnlWidt = 0;
-else
-  % randomly select a subset of instances as anchor points
-  instCntAnc = min(instCntTrn, paraStr.instCntAnc);
-  instIdxLstAnc = sort(randperm(instCntTrn, instCntAnc));
-  dataMatAnc = dataMatTrn(:, instIdxLstAnc);
-
-  % compute the RBF-kernelized feature matrix
-  distMat = CalcDistMat(dataMatTrn, dataMatAnc, 'ecld');
-  rbfKrnlWidt = mean(distMat(:)) * paraStr.rbfKnrlWidtMul;
-  featMat = exp(-distMat .^ 2 / (2 * rbfKrnlWidt ^ 2))';
-end
+smplCnt = size(featMat, 2);
+smplCntTrn = min(smplCnt, paraStr.smplCntTrn);
+smplIdxLstTrn = sort(randperm(smplCnt, smplCntTrn));
+featMatTrn = featMat(:, smplIdxLstTrn);
+lablVecTrn = extrInfo{1}(smplIdxLstTrn);
+lablMatTrn = CvtLablVecToMat(lablVecTrn);
 
 % remove the mean vector from the mapping feature matrix
-featVecAve = mean(featMat, 2);
-featMatCen = bsxfun(@minus, featMat, featVecAve);
+meanVec = mean(featMat, 2);
+featMatCen = bsxfun(@minus, featMatTrn, meanVec);
 
 % randomly initialize binary codes for all training instances
 if strcmp(paraStr.codeInitMthd, 'rand')
@@ -63,8 +51,8 @@ else
   projMat = randn(size(featMatCen, 1), paraStr.hashBitCnt);
   featMatPrj = projMat' * featMatCen;
   featMatSrt = sort(featMatPrj, 2);
-  thrsMat = featMatSrt(:, round(instCntTrn * [0.33, 0.67]));
-  codeMat = ones(paraStr.hashBitCnt, instCntTrn);
+  thrsMat = featMatSrt(:, round(smplCntTrn * [0.33, 0.67]));
+  codeMat = ones(paraStr.hashBitCnt, smplCntTrn);
   codeMat(bsxfun(@le, featMatPrj, thrsMat(:, 1))) = -1;
   codeMat(bsxfun(@ge, featMatPrj, thrsMat(:, 2))) = -1;
 end
@@ -85,7 +73,7 @@ for iterIdx = 1 : paraStr.iterCnt
   fprintf('[INFO] iterIdx = %3d / %3d\n', iterIdx, paraStr.iterCnt);
   
   % update binary codes in a bit-wise style
-  codeMat = zeros(paraStr.hashBitCnt, instCntTrn);
+  codeMat = zeros(paraStr.hashBitCnt, smplCntTrn);
   pMat = codeMat' * clssMat;
   qMat = clssMat * lablMatTrn + paraStr.pnltCoeffQuan * actvMatStr.cmb;
   for iterIdxCode = 1 : paraStr.iterCntCode
@@ -134,8 +122,8 @@ for iterIdx = 1 : paraStr.iterCnt
 end
 
 % create the hashing function handler
-model.hashFunc = @(dataMat)(HashFuncImpl(...
-    dataMat, dataMatAnc, rbfKrnlWidt, featVecAve, projMat, thrsMat, paraStr));
+model.hashFunc = @(featMat)(HashFuncImpl(...
+  preProcFunc(featMat), meanVec, projMat, thrsMat, paraStr));
 
 end
 
@@ -295,34 +283,21 @@ end
 
 end
 
-function codeMat = HashFuncImpl(...
-    dataMat, dataMatAnc, rbfKrnlWidt, featVecAve, projMat, thrsMat, paraStr)
+function codeMat = HashFuncImpl(featMat, meanVec, projMat, thrsMat, paraStr)
 % INTRO
 %   hashing function
 % INPUT
-%   dataMat: D x N (feature matrix of instances to be encoded)
-%   dataMatAnc: D x K (feature matrix of anchor points)
-%   rbfKrnlWidt: scalar (RBF kernel's band-width)
-%   featVecAve: K x 1 (RBF kernelized feature's mean vector)
+%   dataMat: K x N (feature matrix)
+%   meanVec: K x 1 (mean vector)
 %   projMat: R x K (projection matrix)
 %   thrsMat: R x 2 (thresholding matrx of left & right components)
-%   paraStr: structure (parameters for training the retrieval model)
+%   paraStr: struct (hyper-parameters)
 % OUTPUT
 %   codeMat: R x N (binary code matrix)
 
-% compute the kernelized feature matrix
-if strcmp(paraStr.krnlFuncType, 'linear')
-  featMat = dataMat;
-else
-  distMat = CalcDistMat(dataMat, dataMatAnc, 'ecld');
-  featMat = exp(-distMat .^ 2 / (2 * rbfKrnlWidt ^ 2))';
-end
-featMatCen = bsxfun(@minus, featMat, featVecAve);
-
-% compute the activation matrix before binarization
+% compute the binary code matrix
+featMatCen = bsxfun(@minus, featMat, meanVec);
 actvMatStr = CalcActvMat(featMatCen, projMat, thrsMat, paraStr);
-
-% obtain the final binary codes
 codeMat = uint8(actvMatStr.cmb > 0);
 
 end
