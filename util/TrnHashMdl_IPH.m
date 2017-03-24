@@ -16,6 +16,8 @@ addpath(genpath('./extern/GradOpt'));
 
 % perform feature normalization and kernelization
 if paraStr.useKernFeat
+  normFunc = @(x)(bsxfun(@times, x, 1 ./ sqrt(sum(x .^ 2, 1))));
+  featMat = normFunc(featMat);
   opts.ctrdCnt = paraStr.kernAnchCnt;
   opts.iterCnt = 50;
   opts.ctrdLst = [];
@@ -25,7 +27,7 @@ if paraStr.useKernFeat
   kernFunc = @(x)(...
     exp(-CalcDistMat(anchMat, x, 'ecld') .^ 2 / (2 * paraStr.kernBandWid ^ 2)));
   featMat = kernFunc(featMat);
-  preProcFunc = kernFunc;
+  preProcFunc = @(x)(kernFunc(normFunc(x)));
 else
   normFunc = GnrtNormFunc(featMat);
   featMat = normFunc(featMat);

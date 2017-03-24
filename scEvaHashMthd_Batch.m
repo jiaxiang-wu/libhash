@@ -1,8 +1,7 @@
 close all; clearvars; clc;
 
 % initialize constant variables
-kMthdNameLst = [{'LSH'}, {'SH'}, {'ITQ'}, ...
-  {'AGH'}, {'SpH'}, {'IsoH'}, {'IMH'}, {'KMH'}, {'SGH'}];
+kMthdNameLst = [{'SDH'}, {'MCSDH'}, {'IPH'}];
 kHashBitCntLst = [8, 16, 24, 32, 48, 64, 96, 128];
 kEvalFPath = './scEvaHashMthd.m';
 kParaFPath = './util/InitParaStr.m';

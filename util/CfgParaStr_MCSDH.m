@@ -19,7 +19,7 @@ paraStr.kernBandWid = 0.4; % RBF kernel function's band-width
 
 % configure hyper-parameters for the training process
 paraStr.trnWithLablVec = true; % train with the label vector
-paraStr.useKernFeat = false; % use kernelized feature or not
+paraStr.useKernFeat = true; % use kernelized feature or not
 paraStr.iterCnt = 25; % # of iterations
 paraStr.optTlrtLmt = 1e-4; % minimal allowed improvement to continue iterations
 paraStr.smplCntTrn = inf; % # of training points

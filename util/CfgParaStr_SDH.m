@@ -19,13 +19,13 @@ paraStr.kernBandWid = 0.4; % RBF kernel function's band-width
 
 % configure hyper-parameters for the training process
 paraStr.trnWithLablVec = true; % train with the label vector
-paraStr.useKernFeat = false; % use kernelized feature or not
+paraStr.useKernFeat = true; % use kernelized feature or not
 paraStr.iterCnt = 25; % # of iterations
 paraStr.optTlrtLmt = 1e-4; % minimal allowed improvement to continue iterations
 paraStr.smplCntTrn = inf; % # of training samples
 paraStr.reguCoeffClss = 1e+0; % regularizer coefficient of classification
 paraStr.reguCoeffProj = 1e-2; % regularizer coefficient of hash projection
 paraStr.pnltCoeffQuan = 1e-5; % penalty coefficient of quantization error
-paraStr.iterCntCode = 5; % # of iterations to update the binary codes
+paraStr.iterCntCode = 3; % # of iterations to update the binary codes
 
 end
